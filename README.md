@@ -100,7 +100,7 @@ with open('anim.webp', 'rb') as f:
 1. Install `mamba` and `conda-lock`. The easiest way to do this is by installing
    [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge) and then
    running `mamba install conda-lock`.
-   安装`mamba`和`conda-lock`。最简单的方法是安装Mambaforge](https://github.com/conda-forge/miniforge#mambaforge)，然后运行`mamba install conda-lock`。
+   安装`mamba`和`conda-lock`。最简单的方法是安装[Mambaforge](https://github.com/conda-forge/miniforge#mambaforge)，然后运行`mamba install conda-lock`。
 3. 创建并激活Conda环境:
    ```console
    $ conda-lock install -n webp
