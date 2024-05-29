@@ -5,64 +5,61 @@
 [![PyPI](https://img.shields.io/pypi/v/webp)](https://pypi.org/project/webp/)
 [![GitHub](https://img.shields.io/github/stars/anibali/pywebp?style=social)](https://github.com/anibali/pywebp)
 
-## Installation
+## 安装
 
 ```sh
 pip install webp
 ```
 
-On Windows you may encounter the following error during installation:
+在 Windows 系统上，您可能会在安装过程中遇到以下错误:
 
 ```
 conans.errors.ConanException: 'settings.compiler' value not defined
 ```
 
-This means that you need to install a C compiler and configure Conan so that it knows which
-compiler to use. See https://github.com/anibali/pywebp/issues/20 for more details.
+这意味着您需要安装一个 C 编译器，并配置 Conan 以便它知道使用哪个编译器。详见 https://github.com/anibali/pywebp/issues/20 for more details.
 
-### Requirements
+### 依赖
 
 * Python 3.8+
 
-## Usage
+## 使用
 
 ```python
 import webp
 ```
 
-### Simple API
+### 示例 API
 
 ```python
-# Save an image
+# 保存图像
 webp.save_image(img, 'image.webp', quality=80)
 
-# Load an image
+# 加载图像
 img = webp.load_image('image.webp', 'RGBA')
 
-# Save an animation
+# 保存动画
 webp.save_images(imgs, 'anim.webp', fps=10, lossless=True)
 
-# Load an animation
+# 加载动画
 imgs = webp.load_images('anim.webp', 'RGB', fps=10)
 ```
 
-If you prefer working with numpy arrays, use the functions `imwrite`, `imread`, `mimwrite`,
-and `mimread` instead.
+如果您更喜欢使用numpy数组，请使用函数`imwrite`、`imread`、`mimwrite`和`mimread`。
 
-### Advanced API
+
+### 高级 API
 
 ```python
-# Encode a PIL image to WebP in memory, with encoder hints
+# 将PIL图像编码为内存中的WebP，并添加编码器提示
 pic = webp.WebPPicture.from_pil(img)
 config = WebPConfig.new(preset=webp.WebPPreset.PHOTO, quality=70)
 buf = pic.encode(config).buffer()
-
-# Read a WebP file and decode to a BGR numpy array
+# 读取WebP文件并将其解码为BGR numpy数组
 with open('image.webp', 'rb') as f:
   webp_data = webp.WebPData.from_buffer(f.read())
   arr = webp_data.decode(color_mode=WebPColorMode.BGR)
-
-# Save an animation
+# 保存动画
 enc = webp.WebPAnimEncoder.new(width, height)
 timestamp_ms = 0
 for img in imgs:
@@ -72,48 +69,49 @@ for img in imgs:
 anim_data = enc.assemble(timestamp_ms)
 with open('anim.webp', 'wb') as f:
   f.write(anim_data.buffer())
-
-# Load an animation
+# 加载动画
 with open('anim.webp', 'rb') as f:
   webp_data = webp.WebPData.from_buffer(f.read())
   dec = webp.WebPAnimDecoder.new(webp_data)
   for arr, timestamp_ms in dec.frames():
-    # `arr` contains decoded pixels for the frame
-    # `timestamp_ms` contains the _end_ time of the frame
+    # `arr` 包含了解码后的帧像素
+    # `timestamp_ms` 包含了帧的结束时间
     pass
 ```
 
-## Features
 
-* Picture encoding/decoding
-* Animation encoding/decoding
-* Automatic memory management
-* Simple API for working with `PIL.Image` objects
+## 功能特点
 
-### Not implemented
+* 图像编码/解码
+* 动画编码/解码
+* 自动内存管理
+* 用于操作`PIL.Image`对象的简单API
 
-* Encoding/decoding still images in YUV color mode
-* Advanced muxing/demuxing (color profiles, etc.)
-* Expose all useful fields
+### 未实现的功能
 
-## Developer notes
+* 在YUV色彩模式下编码/解码静态图像
+* 高级复用/解复用（色彩配置文件等）
+* 暴露所有有用的字段
 
-### Setting up
+## 开发者笔记
+
+### 设置
 
 1. Install `mamba` and `conda-lock`. The easiest way to do this is by installing
    [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge) and then
-   running `mamba install conda-lock`. 
-2. Create and activate the Conda environment:
+   running `mamba install conda-lock`.
+   安装`mamba`和`conda-lock`。最简单的方法是安装Mambaforge](https://github.com/conda-forge/miniforge#mambaforge)，然后运行`mamba install conda-lock`。
+3. 创建并激活Conda环境:
    ```console
    $ conda-lock install -n webp
    $ mamba activate webp
    ```
-3. Install PyPI dependencies:
+4. 安装PyPI依赖项:
    ```console
    $ pdm install -G:all
    ```
 
-### Running tests
+### 运行测试
 
 ```console
 $ pytest tests/
